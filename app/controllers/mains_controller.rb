@@ -1,10 +1,15 @@
+require 'securerandom'
+
 class MainsController < ApplicationController
   before_action :set_main, only: [:show, :edit, :update, :destroy]
 
   # GET /mains
   # GET /mains.json
   def index
-    @mains = Main.all
+    @user = User.new
+
+    @challenge = SecureRandom.random_number(4074071952668972172536891376818756322102936787331872501272280898708762599526673412366794779).to_s;
+    session[:random_challenge] = @challenge
   end
 
   # GET /mains/1

@@ -10,16 +10,10 @@
   </thead>
 
   <tbody>
-    <% @mains.each do |main| %>
-      <tr>
-        <td><%= link_to 'Show', main %></td>
-        <td><%= link_to 'Edit', edit_main_path(main) %></td>
-        <td><%= link_to 'Destroy', main, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
+    <div class="panel-body">
+    </div>
   </tbody>
 </table>
 
 <br>
 
-<%= link_to 'New Main', new_main_path %>
