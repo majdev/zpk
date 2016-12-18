@@ -3,13 +3,24 @@
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <%= form_for(:session, url: login_path) do |f| %>
+    <%= form_for(:session, url: login_path,html: {id: "login_form"}) do |f| %>
 
+      <div class="field"style="display: none;">
+             <%= f.text_field :rc, id:'rc',:input_html => { :value => @random_challenge }, class: 'form-control' %>
+      </div>
       <%= f.label :username %>
-      <%= f.text_field :uname, class: 'form-control' %>
+      <%= f.text_field :uname, id:'uname', class: 'form-control' %>
 
       <%= f.label :password %>
-      <%= f.password_field :pwdkey, class: 'form-control' %>
+      <%= f.password_field :pwdkey, id:'password2',class: 'form-control' %>
+      <div class="field"style="display: none;">
+        <%= f.label :c %><br>
+        <%= f.text_area :c, id:'c'  %>
+      </div>
+      <div class="field"style="display: none;">
+        <%= f.label :z %><br>
+        <%= f.text_area :z, id:'z'  %>
+      </div>
 
       <%= f.submit "Log in", class: "btn btn-primary" %>
     <% end %>
@@ -17,3 +28,5 @@
     <p>New user? <%= link_to "Sign up now!", signup_path %></p>
   </div>
 </div>
+
+<%= render(:partial=>"users/loginscript") %>
