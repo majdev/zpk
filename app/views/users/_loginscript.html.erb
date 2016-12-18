@@ -1,0 +1,77 @@
+<script src="https://cdn.rawgit.com/emn178/js-sha256/master/src/sha256.js"></script>
+<script src="//leemon.com/crypto/BigInt.js"></script>
+
+<script>
+$( document ).ready(function() {
+	  $('#login_form').submit(addCandZToForm);
+});
+function addCandZToForm(e) {
+	  if($("#c").val().length == 0 && $("#z").val().length == 0) {
+		    e.preventDefault();
+	  }
+      var passwordField = document.getElementById('password2');
+      var usernameField = document.getElementById('uname');
+	  var a = $("#rc").val();
+	  var p = "4074071952668972172536891376818756322102936787331872501272280898708762599526673412366794779";
+	  var g = "3";
+	  a = str2bigInt(a, 10, 1);
+	  p = str2bigInt(p, 10, 1);
+	  g = str2bigInt(g, 10, 1);
+    //x = H(password)
+    var password = $("#password2").val();
+    var username = $("#uname").val();
+    var x = hash(password + username);
+    //y = g^x
+    var y = powMod(g, x, p);
+    //generate random r.
+    var randomWords;
+    var intCount = 8;
+    if (window.crypto && window.crypto.getRandomValues) {
+        randomWords = new Uint32Array(intCount);
+        window.crypto.getRandomValues(randomWords);
+    }
+    // Because of course IE calls it msCrypto instead of being standard
+    else if (window.msCrypto && window.msCrypto.getRandomValues) {
+        randomWords = new Uint32Array(intCount);
+        window.msCrypto.getRandomValues(randomWords);
+    }
+    
+    //Generate a random r
+    var r = int2bigInt(randomWords[0],1,1);
+    var two = int2bigInt(2,1,1);
+    for ( var i = 1; i < intCount; i++) {
+        var newInt = int2bigInt(randomWords[i],1,1);
+        for ( var j = 0; j < i; j++ ) {
+            for ( var k = 0; k < 32; k++) {
+                newInt = mult(newInt,two);
+            }
+            leftShift_(newInt,32);
+        }
+        r = add(r,newInt);
+    }
+    //t = g^r
+    var t = powMod(g, r, p);
+    //c = H(y,t,a)
+    var c = hash(bigInt2str(y, 10) + bigInt2str(t, 10) + bigInt2str(a, 10));
+    //z = r - cx
+    var cx = mult(c, x);
+    var rcx = sub(r, cx);
+    var p1 = sub(p, str2bigInt("1", 10, 1));
+    //big int library makes 2's complement when subtraction
+    //but it doesn't process 2's complements properly
+    if(greater(cx, r)) {
+    	  rcx = sub(cx, r);
+    	  rcx = mod(rcx, p1);
+    	  rcx = sub(p1, rcx);
+    }
+    var z = mod(rcx, p1);
+    $("#c").val(bigInt2str(c, 10));
+    $("#z").val(bigInt2str(z, 10));
+}
+//gets the SHA256 hash as a bigInt in base 10 of a string
+function hash(val) {
+	  var m = sha256(val);
+    var hash = str2bigInt(m.toString(), 16, 1);
+    return hash;
+}
+</script>

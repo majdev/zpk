@@ -1,0 +1,30 @@
+<script src="https://cdn.rawgit.com/emn178/js-sha256/master/src/sha256.js"></script>
+<script src="//leemon.com/crypto/BigInt.js"></script>
+
+<script>
+//Returns the public key given the text of a password
+function generatePublicKey(password, username) {
+    var m = sha256(password + username);
+    var modulus = "4074071952668972172536891376818756322102936787331872501272280898708762599526673412366794779";
+    var biBase = str2bigInt("3", 10, 1);
+    var biExponent = str2bigInt(m.toString(), 16, 1);
+    var biModulus = str2bigInt(modulus, 10, 1);
+    var Y = powMod(biBase, biExponent, biModulus);
+    return bigInt2str(Y,10);
+}
+//Modifies the hidden public key field before submitting
+function addPublicKeyToForm(e) {
+    var passwordField = document.getElementById('password2');
+    var usernameField = document.getElementById('user_uname');
+    var publicKey = generatePublicKey(passwordField.value, usernameField.value);
+    var publicKeyField = document.getElementById('user_pwdkey');
+    publicKeyField.value = publicKey;
+    return true;
+}
+var form = document.getElementById('new_user');
+if (form.attachEvent) {
+    form.attachEvent("submit", addPublicKeyToForm);
+} else {
+    form.addEventListener("submit", addPublicKeyToForm);
+}
+</script>

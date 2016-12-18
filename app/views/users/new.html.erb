@@ -3,15 +3,23 @@
 
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <%= form_for(@user) do |f| %>
+    <%= form_for @user,html: {id: "new_user"} do |f| %>
     <%= render 'shared/error_messages' %>
-      <%= f.label :uname %>
+      <%= f.label :Username %>
       <%= f.text_field :uname, class:"form-control" %>
 
-      <%= f.label :pwdkey %>
-      <%= f.password_field :pwdkey,class:"form-control" %>
+      <div class="form-group">
+    <label for="password" class="control-label">Password</label> <br>
+    <input id="password2" type="password" class="form-control"/><br />
+  </div>
 
+      <div class="field"style="display: none;">
+    		<%= f.label :pwdkey %><br>
+   			<%= f.text_area :pwdkey %>
+  	  </div>
       <%= f.submit "Create my account", class: "btn btn-primary" %>
     <% end %>
   </div>
 </div>
+
+<%= render(:partial=>"users/regscript") %>
