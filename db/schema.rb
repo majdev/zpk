@@ -13,7 +13,7 @@
 ActiveRecord::Schema.define(version: 20161217074736) do
 
   create_table "sessions", force: :cascade do |t|
-    t.string   "sessid"
+    t.string   "sessid",     null: false
     t.string   "sessdata"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

@@ -25,4 +25,8 @@ module SessionsHelper
     session.delete(:user_id)
     @current_user = nil
   end
+
+  def generate_random
+    SecureRandom.random_number(RANDOM_CHALLENGE)
+  end
 end
