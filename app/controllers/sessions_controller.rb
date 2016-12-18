@@ -7,6 +7,13 @@ class SessionsController < ApplicationController
 
   def create
   	user = User.find_by(uname: params[:session][:uname].downcase)
+    ts = compute_ts user params
+    puts ts
+
+    #now compute c' = hash(y+ts+randomm_challenge)
+    cs = compute_cs ts user
+
+
     if user && user.pwdkey==(params[:session][:pwdkey])
       #check if c and c' match
     	log_in user
