@@ -5,9 +5,8 @@
   <div class="col-md-6 col-md-offset-3">
     <%= form_for(:session, url: login_path,html: {id: "login_form"}) do |f| %>
 
-      <div class="field"style="display: none;">
-             <%= f.text_field :rc, id:'rc',:input_html => { :value => @random_challenge }, class: 'form-control' %>
-      </div>
+    <%= hidden_field_tag :rc, @random_challenge %>
+
       <%= f.label :username %>
       <%= f.text_field :uname, id:'uname', class: 'form-control' %>
 
