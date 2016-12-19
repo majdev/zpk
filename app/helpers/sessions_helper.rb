@@ -34,9 +34,9 @@ module SessionsHelper
     #ts = Y^c * G^z
     #c, z retrieve from params
     # Y retrieve from user object stored in the DB as pwdkey
-    y = user.pwdkey # = hashKey = y = g^x
-    c = params[:session][:c]
-    z = params[:session][:z]
+    y = user.pwdkey.to_i # = hashKey = y = g^x
+    c = (params[:session][:c]).to_i
+    z = (params[:session][:z]).to_i
     ts = modexp(y, c, RANDOM_CHALLENGE_MAX_LIMIT) * modexp(G, z, RANDOM_CHALLENGE_MAX_LIMIT)
     return ts
   end
@@ -54,7 +54,8 @@ module SessionsHelper
   end
 
   def compute_hash(y, ts)
-    hash = Digest.SHA256.digest y + ts + @random_challenge
+    rc  = @random_challenge.to_i
+    hash = Digest::SHA256.digest(y.to_s + ts.to_s + rc.to_s)
     return hash.to_i(16)
   end
 end
