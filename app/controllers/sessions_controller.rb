@@ -3,13 +3,13 @@ class SessionsController < ApplicationController
   def new
     # here add random challenge
     @random_challenge = generate_random
+    session[:random_challenge] = @random_challenge
     puts @random_challenge
   end
 
   def create
     puts 'create entered'
   	user = User.find_by(uname:params[:session][:uname].downcase)
-    puts user
     ts = compute_ts user,params
     puts ts
 
@@ -18,7 +18,7 @@ class SessionsController < ApplicationController
 
     puts cs
 
-    
+
 
     #check if cs == cc and usernames match only then athenticate
     if user && cs==(params[:session][:c]).to_i

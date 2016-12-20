@@ -10,8 +10,10 @@
       <%= f.label :username %>
       <%= f.text_field :uname,class: 'form-control' %>
 
-      <%= f.label :password %>
-      <%= f.password_field :password2,class: 'form-control' %>
+       <div class="form-group">
+    <label for="password" class="control-label">Password</label> <br>
+    <input id="session_password2" type="password" class="form-control"/><br />
+  </div>
       <div class="field"style="display: none;">
         <%= f.label :c %><br>
         <%= f.text_area :c%>
